@@ -1,8 +1,7 @@
 {
   "name": "memyselfi",
   "version": "1.0.0",
-  "main": "index.js",
-  "source": "src/index.html",
+  "source": "src/**/*.html",
   "scripts": {
     "start": "parcel",
     "build": "parcel build",
@@ -14,12 +13,18 @@
   "description": "",
   "devDependencies": {
     "@parcel/transformer-glsl": "^2.13.3",
-    "@types/react": "^18.3.18",
+    "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.5",
     "parcel": "^2.13.3",
     "process": "^0.11.10"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fontsource/roboto": "^5.1.1",
+    "@irwinproject/shapley": "^1.0.36",
+    "@mui/icons-material": "^6.4.0",
+    "@mui/material": "^6.4.0",
     "@react-three/drei": "^9.120.6",
     "@react-three/fiber": "^8.17.12",
     "react": "^18.3.1",

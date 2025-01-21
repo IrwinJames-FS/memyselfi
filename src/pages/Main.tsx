@@ -1,8 +1,9 @@
-import ParticleBG from "../components/ParticleBG"
+import { Layout } from "../components"
+
 
 export default function Main(){
-	return (<>
-		<ParticleBG/>
-		<h1>Hello World</h1>
-	</>)
+	console.log("Loading main app");
+	return (<Layout>
+		<h1>Hello Univers</h1>
+	</Layout>)
 }
