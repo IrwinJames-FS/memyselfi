@@ -142,9 +142,10 @@ export default function Doku(){
 		<Stack justifyContent="flex-start" alignItems="center" gap="1rem" sx={{my:"5rem"}}>
 			<Paper sx={{ display: "inline-block"}}>
 				<Stack alignItems="center">
-					{isValid === false && <Alert severity="warning">Puzzle has multiple solutions</Alert>}
-					{isValid === undefined && <Alert severity="error">Puzzle is not solvable</Alert>}
-					{isValid && <Alert severity="success">Puzzle only has one solution</Alert>}
+					{!isLoading && isValid === false && <Alert severity="warning">Puzzle has multiple solutions</Alert>}
+					{!isLoading && isValid === undefined && <Alert severity="error">Puzzle is not solvable</Alert>}
+					{!isLoading && isValid && <Alert severity="success">Puzzle only has one solution</Alert>}
+					{isLoading && <Alert severity="info">Generating puzzle.</Alert>}
 					{isLoading ? <Loading {...{width: "200px", height: "200px", end: 11, strokeWidth: 0.05}}/>:<DokuBoard {...{
 						puzzle, onChange, onSelect, relatives, selectedIndex, locked: locked ?? new Set(), possibleValues
 					}}/>}
