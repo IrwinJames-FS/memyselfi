@@ -1,26 +1,21 @@
-.doku-board{
-	
-	.doku-row:nth-of-type(3n+3){
-		margin-bottom: 0.25rem;
-	}
-	.doku-cell:nth-of-type(3n+3){
-		margin-right: 0.25rem;
-	}
-	.doku-cell{
-		aspect-ratio: 1/1;
-		.MuiFormControl-root, .MuiInputBase-root{
-			height: 100%;
-		}
-		&.selected .MuiPaper-root.MuiCard-root{
-			background-color: color-mix(in srgb, var(--mui-palette-success-main) 25%, transparent);
-		}
-		&.relative .MuiPaper-root{
-			background-color: color-mix(in srgb, var(--mui-palette-primary-main) 10%, transparent);
-		}
-	}
-	
+.doku-board .doku-row:nth-of-type(3n+3){
+	margin-bottom: 0.25rem;
 }
-
+.doku-board .doku-cell:nth-of-type(3n+3){
+	margin-right: 0.25rem;
+}
+.doku-board .doku-cell{
+	aspect-ratio: 1/1;
+}
+.MuiFormControl-root, .MuiInputBase-root{
+	height: 100%;
+}
+.doku-board .doku-cell.selected .MuiPaper-root.MuiCard-root{
+	background-color: color-mix(in srgb, var(--mui-palette-success-main) 25%, transparent);
+}
+.doku-board .doku-cell.relative .MuiPaper-root{
+	background-color: color-mix(in srgb, var(--mui-palette-primary-main) 10%, transparent);
+}
 .MuiPaper-root{
 	backdrop-filter: blur(3px);
 }
