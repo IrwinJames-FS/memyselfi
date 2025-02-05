@@ -1,0 +1,31 @@
+.topbar .shapley-grid-cell{
+	padding: 0 4px;
+}
+
+.topbar .shapley-grid-cell .hex-link{
+	width: 6rem
+}
+
+.topbar .MuiToolbar-root {
+	filter: drop-shadow(2px 2px 4px #000);
+}
+
+#projects-menu .shapley-grid-cell{
+	padding: 0.1rem;
+	width: 6.5rem;
+	
+}
+
+
+#projects-menu .hex-link .MuiButtonBase-root {
+	font-size: 0.7rem;
+	padding: 0.5rem;
+}
+#projects-menu .MuiPaper-root, #project-menu .MuiList-root {
+	background-color: transparent;
+	background-image: none;
+	backdrop-filter: none;
+	clip-path: url(#hexagonVert);
+}
+
+

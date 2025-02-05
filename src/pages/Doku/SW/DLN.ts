@@ -1,11 +1,11 @@
 import DLH from "./DLH";
-import Node, { walk } from "./Node";
+import Node, { walk, walkNodes } from "./Node";
 
 export default class DLN extends Node{
 	topNode: this
 	bottomNode: this
 	column: DLH
-
+	wasRoot: boolean = false;
 	constructor(row: number, column: DLH){
 		super(row);
 		
@@ -23,16 +23,35 @@ export default class DLN extends Node{
 		}
 	} 
 
+	get size(){
+		const s = new Set<number>();
+		var sz = 0;
+		for(const r of this.right()){
+			sz += r.column.size;
+			for(const d of r.downNodes()){
+				s.add(d.value);
+			}
+		}
+		return (sz*2) + (sz-s.size) + (this.column.size*3);
+	}
 	*up(){
-		yield* walk(this, n=>n.topNode);
+		yield* walk(this.topNode, n=>n.topNode);
 	}
 
 	*down(){
 		yield* walk(this, n=>n.bottomNode);
 	}
 
+	*upNodes(){
+		yield* walkNodes(this, n=>n.topNode);
+	}
+
+	*downNodes(){
+		yield* walkNodes(this, n=>n.bottomNode);
+	}
+
 	disconnect(){
-		
+		this.column.size--;
 		this.topNode.bottomNode = this.bottomNode;
 		this.bottomNode.topNode = this.topNode;
 		if(this.column.root === this){
@@ -41,6 +60,7 @@ export default class DLN extends Node{
 	}
 
 	reconnect(){
+		this.column.size++;
 		this.topNode.bottomNode = this;
 		this.bottomNode.topNode = this;
 		if(!this.column.root) this.column.root = this;

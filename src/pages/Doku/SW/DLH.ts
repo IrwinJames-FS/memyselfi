@@ -8,14 +8,16 @@ export default class DLH extends Node {
 		super(column);
 	}
 
+	get isConnected(){
+		return this.leftNode.rightNode === this;
+	}
+
 	disconnect(){
-		this.size--;
 		this.leftNode.rightNode = this.rightNode;
 		this.rightNode.leftNode = this.leftNode;
 	}
 
 	reconnect(){
-		this.size++;
 		this.leftNode.rightNode = this;
 		this.rightNode.leftNode = this;
 	}
@@ -27,6 +29,16 @@ export default class DLH extends Node {
 
 	*up(){
 		if(!this.root) return;
-		yield* this.root.up();
+		yield* this.root.up()
+	}
+
+	*upNodes(){
+		if(!this.root) return;
+		yield* this.root.upNodes();
+	}
+
+	*downNodes(){
+		if(!this.root) return;
+		yield* this.root.downNodes();
 	}
 }

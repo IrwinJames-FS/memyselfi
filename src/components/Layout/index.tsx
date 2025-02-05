@@ -3,16 +3,17 @@ import ParticleBG from "../ParticleBG";
 import { AppBar, createTheme, CssBaseline, PaletteOptions, ThemeProvider, Toolbar, Typography, useMediaQuery } from "@mui/material";
 import { DefaultColorScheme } from "@mui/material/styles/createThemeWithVars";
 import { D, ShapeCache } from "@irwinproject/shapley";
+import Topbar from "../Topbar";
 
 const modes: Record<DefaultColorScheme, PaletteOptions> = {
 	light: {
 		background: {
-			paper: "#FFF6"
+			paper: "#FFFC"
 		}
 	},
 	dark: {
 		background:{
-			paper: "#3336"
+			paper: "#333C"
 		}
 	}
 }
@@ -31,16 +32,13 @@ export default function Layout({children}:{children: ReactNode}){
 	const theme = useCreateTheme();
 	return (<>
 		<ShapeCache shapes={{
-			hexagon: D.polygon(6, {cornerRadius: 0.1})
+			hexagon: D.polygon(6, {cornerRadius: 0.1}),
+			hexagonVert: D.polygon(6, {cornerRadius: 0.1, rotation:30})
 		}}/>
 		<ThemeProvider theme={theme}>
 			<CssBaseline/>
 			<ParticleBG/>
-			<AppBar enableColorOnDark>
-				<Toolbar>
-					<Typography variant="h2">Irwinproject</Typography>
-				</Toolbar>
-			</AppBar>
+			<Topbar/>
 			{children}
 		</ThemeProvider>
 	</>)
