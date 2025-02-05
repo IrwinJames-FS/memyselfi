@@ -43,3 +43,18 @@ I will have to look into it further for api.
 	background-color: var(--mui-palette-action-disabledBackground);
 	color: var(--mui-palette-action-disabled);
 }
+.shapley-shape.hex-link .MuiButtonBase-root{
+	aspect-ratio: var(--shapley-aspect-ratio);
+	color: var(--mui-palette-primary-contrastText);
+	padding: 0;
+}
+.shapley-shape.hex-link.img-link img{
+	aspect-ratio: var(--shapley-aspect-ratio);
+	height: auto;
+	width: 100%;
+	object-fit: cover;
+}
+
+.shapley-shape.hex-link.img-link .MuiButtonBase-root{
+	padding: 0;
+}

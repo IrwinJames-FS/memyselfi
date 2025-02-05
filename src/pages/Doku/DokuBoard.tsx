@@ -8,6 +8,7 @@ interface DokuBoardProps{
 	selectedIndex: number
 	locked: Set<number>
 	possibleValues: Set<number>[]
+	showPossibles: boolean
 	onChange: (index: number, event: KeyboardEvent<HTMLInputElement>)=>void
 	onSelect: (index: number) => void
 }
@@ -26,6 +27,7 @@ const DokuContext = createContext<DokuBoardProps>({
 	selectedIndex: -1,
 	locked: new Set(),
 	possibleValues: [],
+	showPossibles: true,
 	onChange(){},
 	onSelect(){}
 });
@@ -37,12 +39,12 @@ const DokuRow = ({ row }: DokuRowProps) => {
 	</Stack>
 }
 const DokuCell = ({ index }: DokuCellProps) => {
-	const { puzzle, relatives, selectedIndex, onChange, onSelect, locked, possibleValues } = useDoku();
+	const { puzzle, relatives, selectedIndex, onChange, onSelect, locked, possibleValues, showPossibles } = useDoku();
 	const changer: KeyboardEventHandler<HTMLInputElement> = e=>onChange(index, e)
-	return <Box className={`doku-cell${selectedIndex === index ? ' selected':relatives.has(index) ? ' relative':''}`} sx={{width:{xs:'2rem', sm:'3rem', md:'4rem'}}}>
+	return <Box className={`doku-cell${selectedIndex === index ? ' selected':relatives.has(index) ? ' relative':''}`} sx={{width:{xs:'3rem', md:'4rem'}}}>
 		<Card sx={{aspectRatio: '1/1', display: 'flex', justifyContent:'center', alignItems: 'center', position: 'relative'}}>
 			{locked.has(index) ? <b>{puzzle[index] ? puzzle[index]:""}</b>:<>
-			<Stack sx={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'space-evenly', '& p':{margin: 0, fontSize:'0.75rem'}, '&>.MuiStack-root':{
+			{showPossibles && <Stack className="possibles" sx={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'space-evenly', '& p':{margin: 0, fontSize:{xs:"0.5rem", md:"0.75rem"}, lineHeight: {xs: "0.5rem", md:"0.75rem"}}, '&>.MuiStack-root':{
 				justifyContent: "space-evenly"
 			}}}>
 				<Stack direction="row">
@@ -60,7 +62,7 @@ const DokuCell = ({ index }: DokuCellProps) => {
 					<p>{possibleValues[index]?.has(8) && '8'}</p>
 					<p>{possibleValues[index]?.has(9) && '9'}</p>
 				</Stack>
-			</Stack>
+			</Stack>}
 			<TextField {...{
 				autoComplete: "off",
 				value: puzzle[index] ? puzzle[index]:"",
@@ -84,11 +86,13 @@ const DokuCell = ({ index }: DokuCellProps) => {
 	</Box>
 }
 
-export default function DokuBoard({puzzle, onChange, onSelect, selectedIndex, relatives, locked, possibleValues}: DokuBoardProps){
-	return <DokuContext.Provider value={{puzzle, onChange, onSelect, selectedIndex, relatives, locked, possibleValues}}>
-		<Stack className="doku-board">
-			{new Array(9).fill(0).map((_, row)=><DokuRow key={row} {...{puzzle, row, onChange, onSelect, selectedIndex, relatives}}/>)}
-		</Stack>
+export default function DokuBoard({puzzle, onChange, onSelect, selectedIndex, relatives, locked, possibleValues, showPossibles=false}: DokuBoardProps){
+	return <DokuContext.Provider value={{puzzle, onChange, onSelect, selectedIndex, relatives, locked, possibleValues, showPossibles}}>
+		<div id="doku-board">
+			<Stack className="doku-board">
+				{new Array(9).fill(0).map((_, row)=><DokuRow key={row} {...{row}}/>)}
+			</Stack>
+		</div>
 	</DokuContext.Provider>
 }
 
