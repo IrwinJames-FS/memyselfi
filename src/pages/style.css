@@ -1,0 +1,25 @@
+#home-grid > .shapley-grid-cell > .shapley-shape {
+	
+	background-color: var(--mui-palette-background-paper);
+	
+	width: 90%;
+	
+	
+}
+#home-grid > .shapley-grid-cell > .shapley-shape > .shapley-shape-bg {
+	clip-path: var(--shapley-clip);
+}
+#home-grid > .shapley-grid-cell {
+	max-width: 30rem;
+	align-items: center;
+}
+.icon-grid {
+	margin: 1rem;
+}
+.icon-grid > .shapley-grid-cell > .shapley-shape{
+	width: 90%;
+	margin: 0 auto;
+	background-color: var(--mui-palette-primary-main);
+	color: var(--mui-palette-primary-contrastText);
+
+}

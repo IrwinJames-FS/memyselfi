@@ -1,0 +1,60 @@
+/*
+Needs to have more specificity. 
+
+I noticed Mui references using @layer to create a named layer which always yields styling to overwriting anonymous css. 
+
+I will have to look into it further for api.
+*/
+.shapley-shape.hex-link{
+	background-color: var(--mui-palette-primary-main);
+	/*align-items: stretch;*/
+	--shapley-stroke-width: 0.01;
+	--shapley-stroke-color: var(--mui-palette-common-onBackground);
+	color: var(--mui-palette-primary-contrastText);
+	align-items: stretch;
+}
+
+.shapley-shape.hex-link svg{
+	color: var(--mui-palette-primary-contrastText);
+}
+.shapley-shape.hex-link .MuiButtonBase-root:disabled{
+	filter: blur(2px)
+}
+.shapley-shape.hex-link > a, .shapley-shape.hex-link > button {
+	display:flex;
+	flex-grow: 1;
+	
+}
+.shapley-shape.hex-link.success{
+	background-color: var(--mui-palette-success-main);
+	color: var(--mui-palette-success-contrastText);
+	&:hover{
+		background-color: color-mix(in srgb, var(--mui-palette-success-main) 80%, var(--mui-palette-success-contrastText) 20%);
+	}
+}
+.shapley-shape.hex-link.selected{
+	background-color: var(--mui-palette-primary-dark);
+	color: var(--mui-palette-primary-contrastText);
+}
+.shapley-shape.hex-link:hover{
+	background-color: color-mix(in srgb, var(--mui-palette-primary-main) 80%, var(--mui-palette-primary-contrastText) 20%);
+}
+.shapley-shape.hex-link:has(.MuiButtonBase-root:disabled){
+	background-color: var(--mui-palette-action-disabledBackground);
+	color: var(--mui-palette-action-disabled);
+}
+.shapley-shape.hex-link .MuiButtonBase-root{
+	aspect-ratio: var(--shapley-aspect-ratio);
+	color: var(--mui-palette-primary-contrastText);
+	padding: 0;
+}
+.shapley-shape.hex-link.img-link img{
+	aspect-ratio: var(--shapley-aspect-ratio);
+	height: auto;
+	width: 100%;
+	object-fit: cover;
+}
+
+.shapley-shape.hex-link.img-link .MuiButtonBase-root{
+	padding: 0;
+}
