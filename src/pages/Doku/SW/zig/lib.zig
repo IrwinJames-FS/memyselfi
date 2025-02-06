@@ -52,12 +52,7 @@ export fn deallocValidity(val: [*]i8) void {
 
 export fn random(p: [*]i8) void {
     const solution = dlx.mkSolutionList(null) catch return;
-    var prng = std.rand.DefaultPrng.init(blk: {
-        var seed: u64 = undefined;
-        std.posix.getrandom(std.mem.asBytes(&seed)) catch return;
-        break :blk seed;
-    });
-    dlx.rand(solution, 9, &prng) catch return;
+    dlx.rand(solution, 9) catch return;
     const nodes = dlx.minify(solution) catch return;
     const puz: *[81]i8 = @ptrCast(p);
 
@@ -95,9 +90,11 @@ export fn generate(p: [*]i8) void {
     const solution = dlx.mkSolutionList(nodes) catch return;
     if (puzzleComplete(puz)) {
         dlx.uncoverNodes(nodes);
+        std.debug.print("The puzzle is complete\n", .{});
     } else {
         defer dlx.uncoverNodes(nodes);
-        dlx.solve(solution) catch return;
+        std.debug.print("Generating random {}\n", .{nodes.len});
+        dlx.rand(solution, 9) catch return;
     }
 
     const part = dlx.minimize(solution, updater) catch return;

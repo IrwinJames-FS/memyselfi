@@ -18,7 +18,39 @@ const importObject: WebAssembly.Imports = {
     path_open:(...args:unknown[])=>console.log("path_open: ", ...args),
     fd_read: (...args:unknown[])=>console.log("fd_read: ", ...args),
     fd_close: (...args:unknown[])=>console.log("fd_close: ", ...args),
-    random_get: ()=>{}
+    random_get: ()=>{},
+    //this is ai generated tbf
+    clock_time_get: (clockId:number, precision:number, resultPtr:number)=>{
+      try {
+        let timeMs;
+        
+        // Handle different clock types
+        switch (clockId) {
+            case 0:
+                timeMs = Date.now();
+                break;
+            case 1:
+                timeMs = performance.now();
+                break;
+            default:
+                return 28; // ERRNO_INVAL
+        }
+
+        // Convert to nanoseconds (WASI expects u64 nanoseconds)
+        const timeNs = BigInt(timeMs) * 1000000n;
+        
+        
+        //@ts-ignore
+        new DataView(instance.exports.memory.buffer).setUint32(resultPtr, Number(timeNs & 0xFFFFFFFFn), true);
+        //@ts-ignore
+        new DataView(instance.exports.memory.buffer).setUint32(resultPtr + 4, Number(timeNs >> 32n), true);
+
+        return 0;
+      } catch (error) {
+          console.error("clock_time_get error:", error);
+          return 29; // ERRNO_IO (generic error)
+      }
+    }
   }
 };
 //@ts-ignore
@@ -92,6 +124,7 @@ const generateWasm = (id: number, puzzle: number[]) => {
   buffer.set(puz, puzPtr);
   //@ts-expect-error need declaration.
   instance?.exports.generate(puzPtr);
+  console.log("Finished", fd_text);
   //@ts-expect-error is memory not a live buffer. I guess i'll have to use the exports memory
   const wasmSolution = Array.from(new Int8Array(instance.exports.memory.buffer, puzPtr, 81));
   deallocPuzzle(puzPtr);

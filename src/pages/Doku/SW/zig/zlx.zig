@@ -67,7 +67,17 @@ pub const ZLX = struct {
     root: *Node,
     size: i16,
     allocator: Allocator,
+    prng: *std.rand.DefaultPrng,
+    rando: *std.Random,
     pub fn init(allocator: Allocator) !ZLX {
+        const prng = try allocator.create(std.rand.DefaultPrng);
+        prng.* = std.rand.DefaultPrng.init(blk: {
+            const time: u64 = @intCast(std.time.timestamp());
+            break :blk time;
+        });
+        const rando = try allocator.create(std.Random);
+        rando.* = prng.random();
+
         const columns = try allocator.alloc(Column, 324);
         const nodes = try allocator.alloc(Node, 3240);
         const root = try allocator.create(Node);
@@ -125,10 +135,12 @@ pub const ZLX = struct {
                 }
             }
         }
-        return ZLX{ .allocator = allocator, .columns = columns, .nodes = nodes, .root = root, .size = size };
+        return ZLX{ .prng = prng, .rando = rando, .allocator = allocator, .columns = columns, .nodes = nodes, .root = root, .size = size };
     }
 
     pub fn deinit(self: *ZLX) void {
+        self.allocator.free(self.prng);
+        self.allocator.free(self.rando);
         self.allocator.free(self.nodes);
         self.allocator.free(self.columns);
         self.allocator.destroy(self.root);
@@ -240,8 +252,8 @@ pub const ZLX = struct {
         return min;
     }
 
-    pub fn pickRandom(self: *ZLX, prng: *std.rand.DefaultPrng) ?*Column {
-        var r = @abs(prng.random().int(i8));
+    pub fn pickRandom(self: *ZLX) ?*Column {
+        var r = @abs(self.rando.int(i8));
         var itr = self.root.right;
         if (itr.index == -1) return null;
         while (r > 0) : (r -= 1) {
@@ -284,8 +296,8 @@ pub const ZLX = struct {
         }
         return false;
     }
-    pub fn rand(self: *ZLX, solution: *[81]*Node, d: i8, prng: *std.rand.DefaultPrng) error{SolutionNotFound}!void {
-        if (self.pickRandom(prng)) |column| {
+    pub fn rand(self: *ZLX, solution: *[81]*Node, d: i8) error{SolutionNotFound}!void {
+        if (self.pickRandom()) |column| {
             self.coverColumn(column);
             defer self.uncoverColumn(column);
             var itr = column.node.down;
@@ -293,7 +305,7 @@ pub const ZLX = struct {
                 self.coverRow(itr);
                 defer self.uncoverRow(itr);
                 if (d > 0) {
-                    self.rand(solution, d - 1, prng) catch continue;
+                    self.rand(solution, d - 1) catch continue;
                 } else {
                     self.solve(solution) catch continue;
                 }
